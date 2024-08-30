@@ -1,0 +1,37 @@
+﻿   @model List<CLDV_POE.Models.FileModel>
+
+    <h1>Customer Contracts</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="file">Choose a file to upload:</label>
+        <input type="file" name="file" class="form-control"/>
+        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+    </div>
+</form>
+
+@if (Model != null && Model.Count > 0)
+{
+    <ul>
+        @foreach (var file in Model)
+        {
+            <il>
+                @file.Name -
+                Size: @file.DisplaySize -
+                Last Modified: @file.LastModified?.ToString("g")
+                - <a asp-action="DownloadFile" asp-route-fileName="@file.Name">Download</a>
+            </il>
+        }
+    </ul>
+}
+else
+{
+    <p>No files found or model is null.</p>
+}

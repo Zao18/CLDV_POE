@@ -1,0 +1,41 @@
+﻿@model CLDV_POE.Models.Product
+
+@{
+    ViewData["Title"] = "AddProduct";
+}
+<center>
+<h1>AddProduct</h1>
+</center>
+
+<form asp-action="AddProduct" method="post" enctype="multipart/form-data" style="max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <div style="margin-bottom: 20px;">
+        <label >Product Name</label>
+        <input type="text" name="Product_Name" type="text" name="Customer_Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required />
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px;">Description</label>
+        <textarea name="Description" type="text" name="Customer_Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required></textarea>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px;">Price</label>
+        <input type="text" name="Price" type="text" name="Customer_Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required />
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px;">Stock Amount</label>
+        <input type="number" name="Stock_Level" type="text" name="Customer_Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required />
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px;">Image</label>
+        <input type="file" name="file" type="text" name="Customer_Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required />
+    </div>
+
+    <button type="submit" style="background-color: gray; border: none; color: white; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Add Product</button>
+</form>
+
+<div>
+    <a asp-action="Index" style="background-color: gray; border: none; color: white; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

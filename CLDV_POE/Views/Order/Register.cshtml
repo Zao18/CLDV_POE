@@ -1,0 +1,40 @@
+﻿@model CLDV_POE.Models.Order
+
+@{
+    var customers = ViewData["Customer"] as List<CLDV_POE.Models.Customer>;
+    var products = ViewData["Product"] as List<CLDV_POE.Models.Product>;
+}
+
+<h1>Register</h1>
+
+@if (customers == null || customers.Count == 0 || products == null || products.Count == 0)
+{
+    <div class="alert alert-warning">
+        No customers or products avalible. Please ensure they are added first.
+    </div>
+}
+else
+{
+    <form asp-action="Register" method="post">
+        <div class="form-group">
+            <label asp-for="Customer_ID">Select Customer</label>
+            <select asp-for="Customer_ID" class="form-control" asp-items="@(new SelectList(customers, "CustomerId", "Customer_Name"))">
+                <option value="">-- Select Customer --</option>
+            </select>
+            <span asp-asp-validation-for="Customer_ID" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Product_ID">Select Product</label>
+            <select asp-for="Product_ID" class="form-control" asp-items="@(new SelectList(products, "ProductId", "Product_Name"))">
+                <option value="">-- Select Product --</option>
+            </select>
+            <span asp-asp-validation-for="Product_ID" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Order_Date"></label>
+            <input asp-for="Order_Date" class="form-control" type="datetime" />
+            <span asp-validation-for="Order_Date" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Order</button>
+    </form>
+}
