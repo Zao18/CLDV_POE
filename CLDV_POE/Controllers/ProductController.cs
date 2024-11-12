@@ -8,11 +8,13 @@ namespace CLDV_POE.Controllers
     {
         private readonly BlobService _blobService;
         private readonly TableStorageService _tableStorageService;
+        private readonly SqlService _dbContext;
 
-        public ProductController(BlobService blobService, TableStorageService tableStorageService)
+        public ProductController(BlobService blobService, TableStorageService tableStorageService, SqlService dbContext)
         {
             _blobService = blobService;
             _tableStorageService = tableStorageService;
+            _dbContext = dbContext;
         }
 
         public async Task<IActionResult> Index()
@@ -42,7 +44,23 @@ namespace CLDV_POE.Controllers
                 string key = Guid.NewGuid().ToString();
                 product.RowKey = key;
                 product.ProductId = key;
+
                 await _tableStorageService.AddProductAsync(product);
+
+                var productSql = new ProductSql
+                {
+                    ProductId = product.ProductId,
+                    Product_Name = product.Product_Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Stock_Level = product.Stock_Level,
+                    ImageUrl = product.ImageUrl
+                };
+
+                // Save to Azure SQL Database
+                _dbContext.Products.Add(productSql);
+                await _dbContext.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
             return View(product);
@@ -60,3 +78,4 @@ namespace CLDV_POE.Controllers
         }
     }
 }
+

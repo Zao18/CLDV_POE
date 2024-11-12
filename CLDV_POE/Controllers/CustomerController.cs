@@ -7,10 +7,12 @@ namespace CLDV_POE.Controllers
     public class CustomerController : Controller
     {
         private readonly TableStorageService _tableStorageService;
+        private readonly SqlService _dbContext;
 
-        public CustomerController(TableStorageService tableStorageService)
+        public CustomerController(TableStorageService tableStorageService, SqlService dbContext)
         {
             _tableStorageService = tableStorageService;
+            _dbContext = dbContext;
         }
 
         public async Task<IActionResult> Index()
@@ -35,6 +37,18 @@ namespace CLDV_POE.Controllers
                 customer.CustomerId = key;
 
                 await _tableStorageService.AddCustomerAsync(customer);
+
+                var customerSql = new CustomerSql
+                {
+                    CustomerId = customer.CustomerId,
+                    Customer_Name = customer.Customer_Name,
+                    Email = customer.Email,
+                    PhoneNumber = customer.PhoneNumber
+                };
+
+                _dbContext.Customers.Add(customerSql);
+                await _dbContext.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
             return View(customer);
@@ -48,3 +62,4 @@ namespace CLDV_POE.Controllers
         }
     }
 }
+

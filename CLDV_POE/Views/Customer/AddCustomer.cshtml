@@ -6,7 +6,7 @@
 <center>
     <h1>Add a Customer</h1>
 </center>
-<br/>
+<br />
 
 <form asp-action="AddCustomer" method="post" enctype="multipart/form-data" style="max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     <div style="margin-bottom: 20px;">
@@ -30,5 +30,8 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+

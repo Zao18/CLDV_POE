@@ -13,9 +13,9 @@ namespace CLDV_POE.Models
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         [Required(ErrorMessage = "Please select a customer")]
-        public string Customer_ID { get; set; }
+        public string? Customer_ID { get; set; }
         [Required(ErrorMessage = "Please select a product")]
-        public string Product_ID { get; set; }
+        public string? Product_ID { get; set; }
         [Required(ErrorMessage = "Please select the date")]
         public DateTime Order_Date { get; set; }
     }

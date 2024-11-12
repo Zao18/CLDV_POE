@@ -1,4 +1,5 @@
 using CLDV_POE.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace CLDV_POE
 {
@@ -8,22 +9,21 @@ namespace CLDV_POE
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
-            // Add services to the container.
+
             builder.Services.AddControllersWithViews();
 
-            //register blobservice with configureation
+            builder.Services.AddDbContext<SqlService>(options => options.UseSqlServer(configuration.GetConnectionString("AzureSqlDatabase")));
+
             builder.Services.AddSingleton(new BlobService(configuration.GetConnectionString("AzureStorage")));
-            //register tabel storage with configureation
+
             builder.Services.AddSingleton(new TableStorageService(configuration.GetConnectionString("AzureStorage")));
 
-            // Register QueueServices woth configuration
             builder.Services.AddSingleton<QueueService>(sp =>
             {
-                var connesctionString = configuration.GetConnectionString("AzureStorage");
-                return new QueueService(connesctionString, "orders");
+                var connectionString = configuration.GetConnectionString("AzureStorage");
+                return new QueueService(connectionString, "orders");
             });
 
-            //Register fileShareServices with configureation
             builder.Services.AddSingleton<AzureFileShareService>(sp =>
             {
                 var connectionString = configuration.GetConnectionString("AzureStorage");
@@ -32,11 +32,9 @@ namespace CLDV_POE
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -55,3 +53,4 @@ namespace CLDV_POE
         }
     }
 }
+
